@@ -1,0 +1,236 @@
+/* -------------------------- RESET  -------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
+  color: #212121;
+  line-height: 1.5;
+  background-color: #ffffff;
+}
+
+/* -------------------------- /RESET  -------------------------- */
+
+/* -------------------------- Gallery styles  -------------------------- */
+.gallery-list{
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-image{
+  width: 360px;
+  height: 200px;
+}
+
+.description-image{
+  display: flex;
+  gap: 32px;
+
+  justify-content: center;
+  align-items: center;
+
+  border: 1px black solid;
+}
+
+.user-query-form{
+  margin-bottom: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------------------------- /Gallery styles  -------------------------- */
+
+/* -------------------------- Form styles  -------------------------- */
+.user-query-input{
+  width: 272px;
+  height: 40px;
+
+  border: 1px solid #808080;
+  border-radius: 5px;
+  outline: none;
+
+  margin-right: 10px;
+  padding-left: 16px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #808080;
+
+  transition: border-color 250ms linear, box-shadow 350ms linear;
+}
+
+.user-query-input:hover{
+  border-color: black;
+}
+
+.user-query-input:focus {
+  border-color: #4E75FF;
+  box-shadow: 0px 34px 100px 13px rgba(69, 26, 199, 1);
+}
+
+.user-query-btn{
+  width: 91px;
+  height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  outline: none;
+
+  background-color: #4E75FF;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+
+  transition: background-color 250ms linear, transform 250ms linear;
+}
+
+.user-query-btn:hover{
+  background-color: #1231a0;
+  transform: scale(1.1);
+}
+
+/* -------------------------- /Form styles  -------------------------- */
+
+/* -------------------------- Loader styles  -------------------------- */
+.loader {
+  display: block;
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  color: #4559b3;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: 1s spin linear infinite;
+}
+
+.loader:after {
+  color: #FF3D00;
+  transform: rotateY(70deg);
+  animation-delay: .4s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg);
+  }
+}
+
+@keyframes rotateccw {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes spin {
+
+  0%,
+  100% {
+    box-shadow: .2em 0px 0 0px currentcolor;
+  }
+
+  12% {
+    box-shadow: .2em .2em 0 0 currentcolor;
+  }
+
+  25% {
+    box-shadow: 0 .2em 0 0px currentcolor;
+  }
+
+  37% {
+    box-shadow: -.2em .2em 0 0 currentcolor;
+  }
+
+  50% {
+    box-shadow: -.2em 0 0 0 currentcolor;
+  }
+
+  62% {
+    box-shadow: -.2em -.2em 0 0 currentcolor;
+  }
+
+  75% {
+    box-shadow: 0px -.2em 0 0 currentcolor;
+  }
+
+  87% {
+    box-shadow: .2em -.2em 0 0 currentcolor;
+  }
+}
+
+/* -------------------------- /Loader styles  -------------------------- */
