@@ -10,9 +10,8 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 import axios from "axios";
 
 //* Import modules
-import { fetchImg } from "./js/pixabay-api";
+import { fetchImg, loadMore } from "./js/pixabay-api";
 import { renderGallery } from "./js/render-functions";
-import { loadMore } from "./js/pixabay-api";
 
 //* Find elements
 const queryForm = document.querySelector('.user-query-form'); 
@@ -20,12 +19,14 @@ const queryInput = document.querySelector('.user-query-input');
 const queryBtn = document.querySelector('.user-query-btn');
 const gallery = document.querySelector('.gallery-list');
 const loadMoreBtn = document.querySelector('.load-more-btn');
+const pageLoader = document.querySelector('.loader');
 
+//* Function variables 
 let userQuery;
 let page = 1;
+let totalPages;
 
-
-//* Add event listener & apply modules
+//* On form submit function
 const onFormSubmit = async event => {
     event.preventDefault();
     userQuery = queryInput.value.trim();
@@ -43,35 +44,71 @@ const onFormSubmit = async event => {
     }
 
     loadMoreBtn.classList.add('is-hidden');
+    pageLoader.classList.remove('is-hidden');
     page = 1;
-    const { data } = await fetchImg(userQuery, gallery, queryInput, page);
-    console.log(data);
 
-    if (data.totalHits > 1) {
+    const { data } = await fetchImg(userQuery, gallery, queryInput, page);
+
+    pageLoader.classList.add('is-hidden');
+
+    totalPages = Math.floor(data.totalHits / 15);
+    if (totalPages <= 1) {
+        return;
+    }
+    else if (page <= totalPages) {
+        if (page === totalPages) {
+                loadMoreBtn.classList.add('is-hidden');
+                return;
+            }
+
         loadMoreBtn.classList.remove('is-hidden');
-        
-        loadMoreBtn.addEventListener('click', onLoadMoreClick)
+        loadMoreBtn.addEventListener('click', onLoadMoreClick);
     }
 }
 
+//* On load-more-button click function
 const onLoadMoreClick = async event => {
-    page++;
-    
-    const { data } = await loadMore(userQuery, gallery, queryInput, page);
+    try {
+        page++;
+        pageLoader.classList.remove('is-hidden');
 
-    const galleryTemplate = data.hits.map(el => renderGallery(el)).join('');
+        const { data } = await loadMore(userQuery, page);
 
-    gallery.insertAdjacentHTML('beforeend', galleryTemplate);
+        pageLoader.classList.add('is-hidden');
 
-    const lightbox = new SimpleLightbox('.gallery-list a', {
-        captionSelector: 'img',
-        captionsData: 'alt',
-        captionDelay: 250,
-    });
+        if (page === totalPages) {
+            iziToast.info({
+                title: '',
+                titleSize: '25',
+                message: "We're sorry, but you've reached the end of search results.",
+                messageSize: '20',
+                position: 'bottomRight'
+            });
 
-    if (data.hits.length === 0) {
-        loadMoreBtn.classList.add('is-hidden')
-        loadMoreBtn.removeEventListener('click', onLoadMoreClick)
+            loadMoreBtn.classList.add('is-hidden');
+            loadMoreBtn.removeEventListener('click', onLoadMoreClick);
+        }
+
+        const galleryTemplate = data.hits.map(el => renderGallery(el)).join('');
+
+        gallery.insertAdjacentHTML('beforeend', galleryTemplate);
+
+        const lightbox = new SimpleLightbox('.gallery-list a', {
+            captionSelector: 'img',
+            captionsData: 'alt',
+            captionDelay: 250,
+        });
+
+        const galleryItem = document.querySelector('.gallery-item');
+        const rect = galleryItem.getBoundingClientRect()
+
+        window.scrollBy({
+            top: rect.height*2,
+            left: 0,
+            behavior: "smooth",
+        });
+    } catch (err) {
+        console.log(err);
     }
 }
 

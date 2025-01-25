@@ -59,12 +59,26 @@ body {
 
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-item{
+  border-radius: 8px;
+
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: transform 250ms linear;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
 }
 
 .gallery-image{
   width: 360px;
   height: 200px;
+  border-radius: 8px;
 }
 
 .description-image{
@@ -74,7 +88,9 @@ body {
   justify-content: center;
   align-items: center;
 
-  border: 1px black solid;
+  background-color: transparent;
+
+  border-radius: 5px;
 }
 
 .user-query-form{
@@ -266,4 +282,7 @@ body {
   }
 }
 
+.loader.is-hidden{
+  display: none;
+}
 /* -------------------------- /Loader styles  -------------------------- */
