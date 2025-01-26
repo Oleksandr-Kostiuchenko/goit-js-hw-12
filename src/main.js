@@ -3,10 +3,8 @@
 //* Import libraries
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
-
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-
 import axios from "axios";
 
 //* Import modules
@@ -25,6 +23,13 @@ const pageLoader = document.querySelector('.loader');
 let userQuery;
 let page = 1;
 let totalPages;
+
+//* Initializate gallery 
+const lightbox = new SimpleLightbox('.gallery-list a', {
+    captionSelector: 'img',
+    captionsData: 'alt',
+    captionDelay: 250,
+});
 
 //* On form submit function
 const onFormSubmit = async event => {
@@ -51,6 +56,8 @@ const onFormSubmit = async event => {
 
     pageLoader.classList.add('is-hidden');
 
+    lightbox.refresh();
+
     totalPages = Math.floor(data.totalHits / 15);
     if (totalPages <= 1) {
         return;
@@ -62,8 +69,9 @@ const onFormSubmit = async event => {
             }
 
         loadMoreBtn.classList.remove('is-hidden');
+        loadMoreBtn.removeEventListener('click', onLoadMoreClick);
         loadMoreBtn.addEventListener('click', onLoadMoreClick);
-    }
+    }    
 }
 
 //* On load-more-button click function
@@ -76,7 +84,7 @@ const onLoadMoreClick = async event => {
 
         pageLoader.classList.add('is-hidden');
 
-        if (page === totalPages) {
+        if (page > totalPages) {
             iziToast.info({
                 title: '',
                 titleSize: '25',
@@ -92,12 +100,7 @@ const onLoadMoreClick = async event => {
         const galleryTemplate = data.hits.map(el => renderGallery(el)).join('');
 
         gallery.insertAdjacentHTML('beforeend', galleryTemplate);
-
-        const lightbox = new SimpleLightbox('.gallery-list a', {
-            captionSelector: 'img',
-            captionsData: 'alt',
-            captionDelay: 250,
-        });
+        lightbox.refresh();
 
         const galleryItem = document.querySelector('.gallery-item');
         const rect = galleryItem.getBoundingClientRect()
@@ -108,6 +111,14 @@ const onLoadMoreClick = async event => {
             behavior: "smooth",
         });
     } catch (err) {
+        iziToast.error({
+            title: 'Error',
+            titleSize: '25',
+            message: 'Something went wrong',
+            messageSize: '20',
+            position: 'bottomRight'
+        });
+
         console.log(err);
     }
 }

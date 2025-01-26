@@ -34,14 +34,10 @@ export const fetchImg = async (userQuery, gallery, queryInput, page) => {
     galleryData.data.hits.map(imageEl => {
         galleryHTML.push(renderGallery(imageEl));
     });
+    lightbox.refresh();
 
-    gallery.insertAdjacentHTML('beforeend', galleryHTML.join(' '));
 
-    const lightbox = new SimpleLightbox('.gallery-list a', {
-        captionSelector: 'img',
-        captionsData: 'alt',
-        captionDelay: 250,
-    });
+    gallery.insertAdjacentHTML('beforeend', galleryHTML.join(''));
 
     return galleryData;
 }
@@ -57,3 +53,11 @@ export const loadMore = async (userQuery, page) => {
 
     return galleryData;
 }
+
+
+
+    const lightbox = new SimpleLightbox('.gallery-list a', {
+        captionSelector: 'img',
+        captionsData: 'alt',
+        captionDelay: 250,
+    });
